@@ -222,9 +222,13 @@ export class Paynow {
    * @returns {boolean} A value indicating an email is valid or not
    */
   isValidEmail(emailAddress: string) {
-    if (!emailAddress || emailAddress.length === 0) return false;
+    // 254 characters is the longest address SMTP allows (RFC 5321). The cap
+    // also bounds the regular expression's work on hostile input.
+    if (!emailAddress || emailAddress.length > 254) return false;
 
-    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(emailAddress);
+    // The same language as the original /^\w+([\.-]?\w+)*@.../, without the
+    // nested optional quantifier that made it backtrack exponentially.
+    return /^\w+(?:[.-]\w+)*@\w+(?:[.-]\w+)*(?:\.\w{2,3})+$/.test(emailAddress);
   }
 
   /**
