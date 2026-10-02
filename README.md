@@ -1,12 +1,11 @@
 [![Build Status](https://travis-ci.com/paynow/Paynow-NodeJS-SDK.svg?branch=master)](https://travis-ci.com/paynow/Paynow-NodeJS-SDK)
 
-
 # Node.JS SDK for Paynow Zimbabwe's API
 
 ## Sign in to Paynow and get integration details
 
-> Before you can start making requests to Paynow's API, you need to get an integration ID and integration Key from Paynow. 
-See Documentation [Generating Integration Key and Viewing integration ID](https://developers.paynow.co.zw/docs/integration_generation.html)
+> Before you can start making requests to Paynow's API, you need to get an integration ID and integration Key from Paynow.
+> See Documentation [Generating Integration Key and Viewing integration ID](https://developers.paynow.co.zw/docs/integration_generation.html)
 
 ## Documentation
 
@@ -16,18 +15,19 @@ See the [Paynow QuickStart](https://developers.paynow.co.zw/docs/quickstart.html
 
 This library has a set of prerequisites that must be met for it to work
 
-1.  Node version 0.6.0 and above
-1.  NPM (node's package manager, used to install the node library)
+1. Node version 0.6.0 and above
+2. NPM (node's package manager, used to install the node library)
 
 ## Installation
 
 Install the library using NPM or yarn
 
 ```sh
-$ npm install --save paynow
+npm install --save paynow
 ```
+
 ```sh
-$ yarn add paynow
+yarn add paynow
 ```
 
 ## Usage example
@@ -46,10 +46,11 @@ let paynow = new Paynow("INTEGRATION_ID", "INTEGRATION_KEY");
 paynow.resultUrl = "http://example.com/gateways/paynow/update";
 paynow.returnUrl = "http://example.com/return?gateway=paynow";
 
-/* The return url can be set at later stages. 
+/* The return url can be set at later stages.
 You might want to do this if you want to pass data to the return url (like the reference of the transaction) */
 ```
-The Integration ID and Key can be optionally loaded from `PAYNOW_INTEGRATION_ID` and `PAYNOW_INTEGRATION_KEY` environment variables (respectively). An instance of the Paynow class can then be created using the following: 
+
+The Integration ID and Key can be optionally loaded from `PAYNOW_INTEGRATION_ID` and `PAYNOW_INTEGRATION_KEY` environment variables (respectively). An instance of the Paynow class can then be created using the following:
 
 ```javascript
 let paynow = new Paynow();
@@ -107,25 +108,25 @@ The response object is almost identical to the one you get if you send a normal 
 
 ```javascript
 paynow.sendMobile(
-    
+
     // The payment to send to Paynow
-    payment, 
+    payment,
 
     // The phone number making payment
     '0777000000',
-    
+
     // The mobile money method to use.
-    'ecocash' 
+    'ecocash'
 
 ).then(function(response) {
     if(response.success) {
-        // These are the instructions to show the user. 
+        // These are the instructions to show the user.
         // Instruction for how the user can make payment
         let instructions = response.instructions // Get Payment instructions for the selected mobile money method
 
-        // Get poll url for the transaction. This is the url used to check the status of the transaction. 
+        // Get poll url for the transaction. This is the url used to check the status of the transaction.
         // You might want to save this, we recommend you do it
-        let pollUrl = response.pollUrl; 
+        let pollUrl = response.pollUrl;
 
         console.log(instructions)
 
@@ -190,7 +191,6 @@ paynow.send(payment).then( (response) => {
 });
 ```
 
-
-## Development 
+## Development
 
 Fork this repository and clone to local machine

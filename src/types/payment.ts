@@ -1,4 +1,4 @@
-import Cart, { CartItem } from './cart'
+import Cart, { CartItem } from "./cart";
 
 //#region  Payment  Class
 /**
@@ -9,29 +9,33 @@ import Cart, { CartItem } from './cart'
  */
 
 export default class Payment {
-    constructor( public reference: string, public authEmail: string, public items: Cart = new Cart() ) {}
+  constructor(
+    public reference: string,
+    public authEmail: string,
+    public items: Cart = new Cart(),
+  ) {}
 
-    /**
-     * Adds an item to the 'shopping cart'
-     * @param title
-     * @param amount
-     */
-    add(title: string, amount: number, quantity? : number): Payment {
-      this.items.add(new CartItem(title, amount, quantity))
-      return this;
-    }
-  
-    info(): string {
-      return this.items.summary();
-    }
-  
-    /**
-     * Get the total of the items in the cart
-     * @returns {*|number}
-     */
-    total(): number {
-      return this.items.getTotal();
-    }
+  /**
+   * Adds an item to the 'shopping cart'
+   * @param title
+   * @param amount
+   */
+  add(title: string, amount: number, quantity?: number): Payment {
+    this.items.add(new CartItem(title, amount, quantity));
+    return this;
   }
-  
-  //#endregion
+
+  info(): string {
+    return this.items.summary();
+  }
+
+  /**
+   * Get the total of the items in the cart
+   * @returns {*|number}
+   */
+  total(): number {
+    return this.items.getTotal();
+  }
+}
+
+//#endregion

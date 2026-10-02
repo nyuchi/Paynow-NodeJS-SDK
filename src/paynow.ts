@@ -7,7 +7,7 @@ import {
   GOOGLE_QR_PREFIX,
   INNBUCKS_DEEPLINK_PREFIX,
 } from "./constants";
-import axios, {AxiosResponse} from "axios";
+import axios, { AxiosResponse } from "axios";
 //#region StatusResponse Class
 /**
  *
@@ -92,7 +92,7 @@ export class InitResponse {
         this.innbucks_info = [];
         this.innbucks_info.push({
           authorizationcode: data.authorizationcode,
-          deep_link_url : INNBUCKS_DEEPLINK_PREFIX + data.authorizationcode,
+          deep_link_url: INNBUCKS_DEEPLINK_PREFIX + data.authorizationcode,
           qr_code: GOOGLE_QR_PREFIX + data.authorizationcode,
           expires_at: data.authorizationexpires,
         });
@@ -111,12 +111,12 @@ export class InitResponse {
  * @param returnUrl {String} Url to redirect the user after payment
  **/
 
-export  class Paynow {
+export class Paynow {
   constructor(
     public integrationId: string,
     public integrationKey: string,
     public resultUrl: string,
-    public returnUrl: string
+    public returnUrl: string,
   ) {}
 
   /**
@@ -167,9 +167,10 @@ export  class Paynow {
       url: URL_INITIATE_TRANSACTION,
       data: data,
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        "Content-Type": "application/x-www-form-urlencoded",
       },
-    }).then((response) => {
+    })
+      .then((response) => {
         return this.parse(response.data);
       })
       .catch(function (err) {
@@ -184,11 +185,17 @@ export  class Paynow {
    * @param method - The express checkout method.
    * @returns {PromiseLike<InitResponse> | Promise<InitResponse>} the response from the initiation of the transaction
    */
-  async initMobile(payment: Payment, phone: string, method: string): Promise<PromiseLike<InitResponse> | Promise<InitResponse>> {
+  async initMobile(
+    payment: Payment,
+    phone: string,
+    method: string,
+  ): Promise<PromiseLike<InitResponse> | Promise<InitResponse>> {
     this.validate(payment);
 
     if (!this.isValidEmail(payment.authEmail))
-      this.fail("Invalid email. Please ensure that you pass a valid email address when initiating a mobile payment");
+      this.fail(
+        "Invalid email. Please ensure that you pass a valid email address when initiating a mobile payment",
+      );
 
     let data = this.buildMobile(payment, phone, method);
 
@@ -198,7 +205,7 @@ export  class Paynow {
         url: URL_INITIATE_MOBILE_TRANSACTION,
         data: data,
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          "Content-Type": "application/x-www-form-urlencoded",
         },
       });
       return this.parse(response.data);
@@ -215,9 +222,13 @@ export  class Paynow {
    * @returns {boolean} A value indicating an email is valid or not
    */
   isValidEmail(emailAddress: string) {
-    if (!emailAddress || emailAddress.length === 0) return false;
+    // 254 characters is the longest address SMTP allows (RFC 5321). The cap
+    // also bounds the regular expression's work on hostile input.
+    if (!emailAddress || emailAddress.length > 254) return false;
 
-    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(emailAddress);
+    // The same language as the original /^\w+([\.-]?\w+)*@.../, without the
+    // nested optional quantifier that made it backtrack exponentially.
+    return /^\w+(?:[.-]\w+)*@\w+(?:[.-]\w+)*(?:\.\w{2,3})+$/.test(emailAddress);
   }
 
   /**
@@ -298,7 +309,7 @@ export  class Paynow {
         .replace(/%(?![\da-f]{2})/gi, function () {
           return "%25";
         })
-        .replace(/\+/g, "%20")
+        .replace(/\+/g, "%20"),
     );
   }
 
@@ -358,7 +369,7 @@ export  class Paynow {
   buildMobile(
     payment: Payment,
     phone: string,
-    method: string
+    method: string,
   ): Error | { [key: string]: string } {
     let data: { [key: string]: string } = {
       resulturl: this.resultUrl,
@@ -389,7 +400,9 @@ export  class Paynow {
    * @param url
    * @returns {PromiseLike<InitResponse> | Promise<InitResponse>}
    */
-  public async pollTransaction(url: string): Promise<PromiseLike<InitResponse> | Promise<InitResponse>> {
+  public async pollTransaction(
+    url: string,
+  ): Promise<PromiseLike<InitResponse> | Promise<InitResponse>> {
     let response = await axios({
       method: "POST",
       url: url,
