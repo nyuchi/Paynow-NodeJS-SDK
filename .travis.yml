@@ -1,7 +1,7 @@
 language: node_js
 node_js:
-- stable
-- '6'
+  - stable
+  - "6"
 deploy:
   provider: npm
   email: projects@webdevworld.com
