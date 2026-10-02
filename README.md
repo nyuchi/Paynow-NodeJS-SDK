@@ -15,19 +15,19 @@ See the [Paynow QuickStart](https://developers.paynow.co.zw/docs/quickstart.html
 
 This library has a set of prerequisites that must be met for it to work
 
-1.  Node version 0.6.0 and above
-1.  NPM (node's package manager, used to install the node library)
+1. Node version 0.6.0 and above
+2. NPM (node's package manager, used to install the node library)
 
 ## Installation
 
 Install the library using NPM or yarn
 
 ```sh
-$ npm install --save paynow
+npm install --save paynow
 ```
 
 ```sh
-$ yarn add paynow
+yarn add paynow
 ```
 
 ## Usage example
